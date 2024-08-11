@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        #welcome, #logoutBtn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loginForm">
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button id="loginBtn">Login</button>
+    </div>
+
+    <div id="welcome">
+        <label>Selamat datang, <span id="welcomeUser"></span>!</label>
+    </div>
+    <button id="logoutBtn">Logout</button>
+
+    <script>
+        // Check if user is already logged in
+        if (localStorage.getItem('username')) {
+            showWelcomeScreen(localStorage.getItem('username'));
+        }
+
+        document.getElementById('loginBtn').addEventListener('click', function () {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username && password) {
+                // Store username and password in localStorage
+                localStorage.setItem('username', username);
+                localStorage.setItem('password', password);
+
+                showWelcomeScreen(username);
+            } else {
+                alert('Silakan masukkan username dan password.');
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            // Clear localStorage
+            localStorage.removeItem('username');
+            localStorage.removeItem('password');
+
+            // Reset UI
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('welcome').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'none';
+        });
+
+        function showWelcomeScreen(username) {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('welcomeUser').textContent = username;
+            document.getElementById('welcome').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>

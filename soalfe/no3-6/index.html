@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch and Display Data</title>
+</head>
+<body>
+    <h1>Data from API</h1>
+    <!-- Tabel untuk menampilkan data -->
+    <table id="data-table" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Body</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data akan diisi di sini -->
+        </tbody>
+    </table>
+
+    <script>
+        // 1. Fetch data dari API dan cetak ke console log
+        fetch('http://jsonplaceholder.typicode.com/posts')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Cetak data ke console log
+
+                // 2. Tampilkan data ke dalam tabel
+                const tableBody = document.getElementById('data-table').querySelector('tbody');
+                const maxData = 10; // Tampilkan maksimal 10 data
+
+                data.slice(0, maxData).forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.id}</td>
+                        <td>${item.title}</td>
+                        <td>${item.body}</td>
+                        <td><button onclick="deleteRow(${index})">Delete</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // Simpan data ke variabel global untuk memudahkan manipulasi
+                window.data = data.slice(0, maxData);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+
+        // 3. Function untuk menghapus salah satu data
+        function deleteRow(index) {
+            const tableBody = document.getElementById('data-table').querySelector('tbody');
+            tableBody.deleteRow(index);
+            window.data.splice(index, 1); // Hapus data dari array
+            console.log('Updated data:', window.data);
+        }
+
+        // 4. Hapus salah satu key dari object pada json response
+        function removeKey(key) {
+            window.data.forEach(item => {
+                delete item[key];
+            });
+            console.log('Data after key removal:', window.data);
+        }
+    </script>
+</body>
+</html>

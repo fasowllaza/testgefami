@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Data and Label Update</title>
+</head>
+<body>
+    <!-- Label yang akan diubah -->
+    <label id="infoLabel">Initial Value</label>
+    <!-- Tombol untuk mengubah nilai label -->
+    <button onclick="changeLabel()">Change Label</button>
+
+    <script>
+        let data = [];
+
+        // Fetch data from data.json
+        fetch('data.json')
+            .then(response => response.json())
+            .then(jsonData => {
+                data = jsonData;
+            })
+            .catch(error => console.error('Error loading JSON:', error));
+
+        // Function to change the label value
+        function changeLabel() {
+            if (data.length > 0) {
+                const label = document.getElementById('infoLabel');
+                label.textContent = data[1].name; // Change this to the desired value
+            } else {
+                console.error('Data not loaded yet');
+            }
+        }
+    </script>
+</body>
+</html>
